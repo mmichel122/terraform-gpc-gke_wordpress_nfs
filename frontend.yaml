@@ -1,19 +1,13 @@
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: efs-sc
-provisioner: efs.csi.aws.com
----
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: efs-pv
+  name: nfs-pv
 spec:
   capacity:
     storage: 5Gi
   accessModes:
     - ReadWriteMany
-  storageClassName: efs-sc
+  storageClassName: nfs-sc
   nfs:
     server: 10.106.87.42
     path: "/wordpress_files"
@@ -21,11 +15,11 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: efs-claim
+  name: nfs-claim
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: efs-sc
+  storageClassName: nfs-sc
   resources:
     requests:
       storage: 5Gi
@@ -86,4 +80,4 @@ spec:
       volumes:
       - name: wordpress-persistent-storage
         persistentVolumeClaim:
-          claimName: efs-claim
+          claimName: nfs-claim
